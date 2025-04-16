@@ -57,6 +57,20 @@ class AddressBook:
                 print("Validation error" , e)
             return
         print("Contact Not Found")
+
+    def delete_contact(self):
+        name = input("Enter First Name of the contact to delete")
+        for detail in self.details:
+            if detail.first_name == name:
+                confirm = input(f"Are you sure  you want to delete {detail.first_name}?? (y/n): ")
+                if confirm == 'y':
+                    self.details.remove(detail)
+                    print("Contact Deleted")
+                else:
+                    print("Deletion Cancelled")
+                return
+        print("Contact Not Found")
+        
         
 
 
