@@ -5,23 +5,23 @@ class AddressBookSystem:
         self.books =  {} #maintain a dictionary for address book
 
     def create_book(self):
-        book = input("Enter name of New Address Book").strip()
+        book = input("Enter name of New Address Book: ").strip()
         if book in self.books:
             print("Address Book alredy exists")
         else:
             self.books[book] = AddressBook()
-            print("\nAddress Book created '{book}")
+            print(f"\nAddress Book created '{book}'")
     
     def list_book(self):
         if not self.books:
             print("No Address Book")
         else:
-            print("\nAvailable Address Book:")
+            print("\nAvailable Address Book: ")
             for book in self.books:
                 print(f"{book}")
 
     def get_book(self):
-        book = print("\nEnter the name of Address Book you want to open:")
+        book = input("\nEnter the name of Address Book you want to open: ")
         return self.books.get(book)
     
     def operate_book(self):

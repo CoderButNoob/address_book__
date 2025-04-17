@@ -1,5 +1,5 @@
 
-from details import Details
+from details import Details, get_contact_input
 
 class AddressBook:
     def __init__(self):
@@ -8,24 +8,17 @@ class AddressBook:
     #the number of time we call it appends the data to the details list of an address-book
     def add_contact(self):
         print("\n Add New Contact")
-        data = {
-            "first_name": input("First Name: "),
-            "last_name": input("Last Name:"),
-            "address": input("Address: "),
-            "city": input("City: "),
-            "state": input("State: "),
-            "zip_code": input("Zip Code: "),
-            "phone": input("Phone Number: "),
-            "email": input("Email: ")
-        }
-
-        try:
-            detail = Details(**data)
-            self.details.append(detail)
-            print("Data Added !!!")
-        except Exception as e:
-            print("Validation Error: ",e)
-    
+        contact = get_contact_input()
+        if contact is None:
+            print("Print Contact not added due to validation error")
+            return
+        
+        if any(c.first_name == contact.first_name and c.last_name == contact.last_name for  c in self.details):
+            print("Contact already Exists")
+        
+        self.details.append(contact)
+        print("Conatct Added Succesfully")
+                    
     def display_contacts(self):
         if not self.details:
             print("\nEmpty Book...")
