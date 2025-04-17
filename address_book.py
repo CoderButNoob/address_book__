@@ -1,9 +1,11 @@
+
 from details import Details
 
 class AddressBook:
     def __init__(self):
-        self.details =  []
+        self.details =  [] #this help  in adding multiple contact in an perticular address book
     
+    #the number of time we call it appends the data to the details list of an address-book
     def add_contact(self):
         print("\n Add New Contact")
         data = {
@@ -31,7 +33,7 @@ class AddressBook:
         
         print("\n All Contacts")
         for i , detail in enumerate(self.details,1):
-            print("\n Contact{i} : {detail}")
+            print(f"\n Contact{i} : {detail}")
     
     def edit_contacts(self):
         name = input("Enter the first name of contact to edit")
