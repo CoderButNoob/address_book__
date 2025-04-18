@@ -9,7 +9,8 @@ def main():
         print("1. Create Address Book")
         print("2. List Address Book")
         print("3. Open Address Book")
-        print("4. Exit")
+        print("4. Search by City or State")
+        print("0. Exit")
 
         choice = int(input("Enter Your Choice:"))
 
@@ -19,9 +20,11 @@ def main():
             system.list_book()
         elif choice == 3:
             system.operate_book()
-        elif choice == 4:
+        elif choice == 0:
             print("Goodbye")
             break
+        elif choice == 4:
+            system.search_by_city_state()
         else:
             print("Invalid Input")
 

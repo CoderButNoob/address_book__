@@ -54,5 +54,39 @@ class AddressBookSystem:
             else:
                 print("Invalid choice.")
 
+    def search_by_city_state(self):
+        if not self.books:
+            print("No Book")
+            return
+        
+        choice = int(input("\nEnter (1)-City (2)-State: "))
+        if choice  == 1:
+            key = "city"
+        elif choice == 2:
+            key = "state"
+        else:
+            print("Invalid Choice")
+            return
+        
+        option = input(f"Enter {key.title()} to search: ")
+        found = False
+
+        for book_name , book in self.books.items():
+            for contact in book.details:
+                if getattr(contact,key) == option:
+                    print(contact)
+                    found = True
+            
+            if not found:
+                print("Conatct Not found")
+
+
+        
+        
+
+
+
+
+
 
 
