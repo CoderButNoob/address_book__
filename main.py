@@ -10,6 +10,7 @@ def main():
         print("2. List Address Book")
         print("3. Open Address Book")
         print("4. Search by City or State")
+        print("5. View by City or State")
         print("0. Exit")
 
         choice = int(input("Enter Your Choice:"))
@@ -25,6 +26,8 @@ def main():
             break
         elif choice == 4:
             system.search_by_city_state()
+        elif choice == 5:
+            system.view_by_city_or_state()
         else:
             print("Invalid Input")
 

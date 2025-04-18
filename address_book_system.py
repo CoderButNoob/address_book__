@@ -79,6 +79,42 @@ class AddressBookSystem:
             
             if not found:
                 print("Conatct Not found")
+    
+    def view_by_city_or_state(self):
+        if not self.books:
+            print("No Book")
+            return
+        person_state = {}
+        person_city = {}
+
+        for book in self.books.values():
+            for contact in book.details:
+                city = contact.city.title()
+                person_city.setdefault(city, []).append(contact)   
+
+                state = contact.state.title()
+                person_state.setdefault(state, []).append(contact)
+            
+        choice = int(input("\nEnter (1)-City (2)-State: "))
+        if choice  == 1:
+            for city , people in person_city.items():
+                print(f"\n City :{city} ({len(people)} contact{'s' if len(people)>1 else ''})")
+                for person in people:
+                    print(person)
+            
+        elif choice == 2:
+            for state, people in person_state.items():
+                print(f"\n State :{state} ({len(people)} contact{'s' if len(people)>1 else ''})")
+                for person in people:
+                    print(person)
+        else:
+            print("Invalid Entry")
+
+        
+            
+
+
+
 
 
         

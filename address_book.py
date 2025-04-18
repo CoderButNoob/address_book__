@@ -26,7 +26,7 @@ class AddressBook:
         
         print("\n All Contacts")
         for i , detail in enumerate(self.details,1):
-            print(f"\n Contact{i} : {detail}")
+            print(f"\n Contact{i} : \n{detail}")
     
     def edit_contacts(self):
         name = input("Enter the first name of contact to edit")
