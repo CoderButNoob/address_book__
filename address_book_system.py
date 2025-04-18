@@ -80,7 +80,7 @@ class AddressBookSystem:
             if not found:
                 print("Conatct Not found")
     
-    def view_by_city_or_state(self):
+    def view_by_city_or_state(self, count_only = False):
         if not self.books:
             print("No Book")
             return
@@ -99,16 +99,22 @@ class AddressBookSystem:
         if choice  == 1:
             for city , people in person_city.items():
                 print(f"\n City :{city} ({len(people)} contact{'s' if len(people)>1 else ''})")
-                for person in people:
-                    print(person)
+                if not count_only :
+                    for person in people:
+                        print(person)
             
         elif choice == 2:
             for state, people in person_state.items():
                 print(f"\n State :{state} ({len(people)} contact{'s' if len(people)>1 else ''})")
-                for person in people:
-                    print(person)
+                if not count_only :
+                    for person in people:
+                        print(person)
         else:
             print("Invalid Entry")
+    
+    def count_by_city_or_state(self):
+        self.view_by_city_or_state(count_only=True)
+
 
         
             

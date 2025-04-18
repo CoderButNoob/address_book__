@@ -48,14 +48,28 @@ def test_fake_add_contact():
     
     assert len(book.details) == 10
 
-# def test_group_by_city():
-#     book = AddressBook()
-#     for _ in range(10):
-#         conatct = Details(**generate_fake_contact())
-#         book.details.append(conatct)
+def test_group_by_city():
+    book = AddressBook()
+    for _ in range(10):
+        conatct = Details(**generate_fake_contact())
+        book.details.append(conatct)
     
-#     city = {}
-#     for contact in book.details:
-#         city.setdefault
+    city_map = {}
+    for contact in book.details:
+        city_map.setdefault(contact.city, []).append(contact)
+    
+    assert any(len(contacts)>1 for contacts in city_map.values())
+
+def test_group_by_state():
+    book = AddressBook()
+    for _ in range(10):
+        conatct = Details(**generate_fake_contact())
+        book.details.append(conatct)
+    
+    state_map= {}
+    for contact in book.details:
+        state_map.setdefault(conatct.state, []).append(contact)
+    
+    assert any(len(contacts)>1 for contacts in state_map.values())
         
     
