@@ -1,8 +1,9 @@
-from address_book_system import AddressBookSystem
+from address_book_system import AddressBookSystem,AddressBookSearch
 
 def main():
-    print("📘 Welcome to the Address Book System")
+    print("Welcome to the Address Book System")
     system = AddressBookSystem()
+    search = AddressBookSearch()
 
     while True:
         print("\nMenu")
@@ -11,6 +12,7 @@ def main():
         print("3. Open Address Book")
         print("4. Search by City or State")
         print("5. View by City or State")
+        print("6. Count by City or State")
         print("0. Exit")
 
         choice = int(input("Enter Your Choice:"))
@@ -25,9 +27,11 @@ def main():
             print("Goodbye")
             break
         elif choice == 4:
-            system.search_by_city_state()
+            search.search_by_city_state()
         elif choice == 5:
-            system.view_by_city_or_state()
+            search.view_by_city_or_state()
+        elif choice == 6:
+            search.count_by_city_or_state()
         else:
             print("Invalid Input")
 

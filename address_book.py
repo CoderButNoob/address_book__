@@ -65,6 +65,15 @@ class AddressBook:
                     print("Deletion Cancelled")
                 return
         print("Contact Not Found")
+
+    def sort_contacts(self):
+        if not self.details:
+            print("No Contact")
+            return
+        
+        self.details.sort(key = lambda contact :contact.first_name.lower())
+        print("Sorted by First Name")
+
         
         
 

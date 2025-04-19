@@ -37,7 +37,8 @@ class AddressBookSystem:
             print("2. Display Contacts")
             print("3. Edit Contact")
             print("4. Delete Contact")
-            print("5. Back to Main Menu")
+            print("5. Sort Contact")
+            print("6. Back to Main Menu")
 
             choice = input("Enter choice: ")
 
@@ -49,11 +50,17 @@ class AddressBookSystem:
                 book.edit_contacts()
             elif choice == "4":            
                 book.delete_contact()
-            elif choice == "5":
+            elif choice == "6":
                 break
+            elif choice  == "5":
+                book.sort_contact()
             else:
                 print("Invalid choice.")
-
+            
+class AddressBookSearch(AddressBookSystem):
+    def __init__(self):
+        super().__init__()
+        
     def search_by_city_state(self):
         if not self.books:
             print("No Book")

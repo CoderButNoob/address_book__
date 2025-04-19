@@ -17,9 +17,7 @@ class Details(BaseModel):
     def validate_first_name(cls , value):
         if not value.istitle():
             raise ValueError("First Name should start with a capital letter")
-        return value
-    
-    
+        return value    
     
     @field_validator('zip_code')
     @classmethod
