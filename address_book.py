@@ -71,8 +71,25 @@ class AddressBook:
             print("No Contact")
             return
         
-        self.details.sort(key = lambda contact :contact.first_name.lower())
-        print("Sorted by First Name")
+        print("\nSort by:\n1. First Name\n2. City\n3. State\n4. Zip Code")
+        choice = int(input("Enter Choice 1/2/3/4"))
+        if choice == 1:
+            self.details.sort(key = lambda contact :contact.first_name.lower())
+            print("Sorted by First Name")
+        elif choice == 2:
+            self.details.sort(key = lambda contact: contact.city.lower())
+            print("Sorted by City")
+        elif choice == 3:
+            self.details.sort(key = lambda contact: contact.state.lower())
+            print("Sorted by State")
+        elif choice == 4:
+            self.details.sort(key = lambda contact: contact.zip_code.lower())
+            print("Sorted by Zip Code")
+        else:
+            print("Invalid")
+
+        
+
 
         
         
