@@ -1,18 +1,9 @@
 First Name : Aniket
 Last Name : Sonar
-Address : 1w2
+Address : 123
 City : dgp
 State : wb
-Zip Code : 123654
+Zip Code : 123456
 Phone : +91 6295531813
-Email : s@gmai.com
-----------------------------------------
-First Name : Shriya
-Last Name : Patpatiya
-Address : 12243
-City : krn
-State : Hr
-Zip Code : 710025
-Phone : +91 7206338345
-Email : shriiya@gmail.com
+Email : s@gmail.com
 ----------------------------------------

@@ -2,6 +2,7 @@
 from details import Details, get_contact_input
 from file_manager.file_manager_txt import  AddressBookFileManager
 from file_manager.file_manager_csv import AddressBookFileManagerCSV
+from file_manager.file_manager_json import AddressBookFileManagerJSON
 
 
 class AddressBook:
@@ -24,6 +25,7 @@ class AddressBook:
 
         self.add_to_txt()
         self.write_csv()
+        self.write_json()
         
         
     
@@ -38,6 +40,12 @@ class AddressBook:
     
     def read_csv(self , filename = "address_book.csv"):
         AddressBookFileManagerCSV.read_csv(self.details, filename)
+    
+    def write_json(self, filename="address_book.json"):
+        AddressBookFileManagerJSON.write_json(self.details, filename)
+
+    def read_json(self, filename="address_book.json"):
+        self.details = AddressBookFileManagerJSON.read_json(filename) 
     
 
                     
