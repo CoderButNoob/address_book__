@@ -1,5 +1,7 @@
 
 from details import Details, get_contact_input
+from file_manager.file_manager_txt import  AddressBookFileManager
+
 
 class AddressBook:
     def __init__(self):
@@ -18,6 +20,15 @@ class AddressBook:
         
         self.details.append(contact)
         print("Conatct Added Succesfully")
+
+        self.add_to_txt()
+        
+    
+    def add_to_txt(self , filename = "address_book.txt"):
+        AddressBookFileManager.write_detail(self.details,filename)
+    
+    def read_from_txt(self , filename = "address_book.txt"):
+        self.details = AddressBookFileManager.read_details(filename)
                     
     def display_contacts(self):
         if not self.details:
