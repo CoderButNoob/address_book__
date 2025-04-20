@@ -1,6 +1,7 @@
 
 from details import Details, get_contact_input
 from file_manager.file_manager_txt import  AddressBookFileManager
+from file_manager.file_manager_csv import AddressBookFileManagerCSV
 
 
 class AddressBook:
@@ -22,6 +23,8 @@ class AddressBook:
         print("Conatct Added Succesfully")
 
         self.add_to_txt()
+        self.write_csv()
+        
         
     
     def add_to_txt(self , filename = "address_book.txt"):
@@ -29,6 +32,14 @@ class AddressBook:
     
     def read_from_txt(self , filename = "address_book.txt"):
         self.details = AddressBookFileManager.read_details(filename)
+    
+    def write_csv(self , filename = "address_book.csv"):
+        AddressBookFileManagerCSV.write_csv(self.details, filename)
+    
+    def read_csv(self , filename = "address_book.csv"):
+        AddressBookFileManagerCSV.read_csv(self.details, filename)
+    
+
                     
     def display_contacts(self):
         if not self.details:
