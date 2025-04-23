@@ -3,6 +3,7 @@ from details import Details, get_contact_input
 from file_manager.file_manager_txt import  AddressBookFileManager
 from file_manager.file_manager_csv import AddressBookFileManagerCSV
 from file_manager.file_manager_json import AddressBookFileManagerJSON
+from addressbook_db.insert_contact import  insert_contact
 
 
 class AddressBook:
@@ -22,6 +23,8 @@ class AddressBook:
         
         self.details.append(contact)
         print("Conatct Added Succesfully")
+
+        insert_contact(contact)
 
         self.add_to_txt()
         self.write_csv()

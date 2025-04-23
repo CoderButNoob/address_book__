@@ -1,9 +1,9 @@
 First Name : Aniket
 Last Name : Sonar
-Address : 123
+Address : dgp
 City : dgp
-State : wb
-Zip Code : 123456
+State : WB
+Zip Code : 123654
 Phone : +91 6295531813
 Email : s@gmail.com
 ----------------------------------------
