@@ -1,141 +1,171 @@
-from address_book import AddressBook
+# address_book_system.py
+from addressbook_db.insert_into_db import (
+    create_address_book,
+    list_address_books,
+    add_contact,
+    fetch_contacts,
+)
+from address_book import AddressBook, get_contact_input
+
 
 class AddressBookSystem:
-    def __init__(self):
-        self.books =  {} #maintain a dictionary for address book
+    """CLI controller that talks to MySQL‑backed AddressBook objects."""
 
-    def create_book(self):
-        book = input("Enter name of New Address Book: ").strip()
-        if book in self.books:
-            print("Address Book alredy exists")
-        else:
-            self.books[book] = AddressBook()
-            print(f"\nAddress Book created '{book}'")
-    
-    def list_book(self):
-        if not self.books:
-            print("No Address Book")
-        else:
-            print("\nAvailable Address Book: ")
-            for book in self.books:
-                print(f"{book}")
+    def __init__(self) -> None:
+        # cache: {name -> AddressBook instance}
+        self.books: dict[str, AddressBook] = {}
 
-    def get_book(self):
-        book = input("\nEnter the name of Address Book you want to open: ")
-        return self.books.get(book)
-    
-    def operate_book(self):
+    # ---------- Address‑Book CRUD ---------- #
+    def create_book(self) -> None:
+        name = input("Enter name of New Address Book: ").strip()
+        if not name:
+            print("Name cannot be empty.")
+            return
+
+        ab_id = create_address_book(name)
+        if ab_id:
+            self.books[name] = AddressBook(db_id=ab_id)
+            print(f"✅ Address Book '{name}' created (id {ab_id}).")
+        else:
+            print("❌ Address Book already exists or DB error.")
+
+    def list_book(self) -> None:
+        rows = list_address_books()
+        if not rows:
+            print("No Address Books in DB.")
+            return
+
+        print("\nAvailable Address Books:")
+        for _id, nm in rows:
+            print(f"{_id:>3}  {nm}")
+
+    def _load_book(self, name: str) -> AddressBook | None:
+        """Lazy‑load an AddressBook instance from DB if not cached."""
+        if name in self.books:
+            return self.books[name]
+
+        lookup = {nm: _id for _id, nm in list_address_books()}
+        if name not in lookup:
+            return None
+
+        self.books[name] = AddressBook(db_id=lookup[name])
+        return self.books[name]
+
+    def get_book(self) -> AddressBook | None:
+        name = input("\nEnter the name of Address Book you want to open: ").strip()
+        return self._load_book(name)
+
+    # ---------- Main interaction loop ---------- #
+    def operate_book(self) -> None:
         book = self.get_book()
-        if not book :
+        if not book:
             print("Address Book not found")
             return
-        
-        while True:
-            
-            print("\nMenu:")
-            print("1. Add Contact")
-            print("2. Display Contacts")
-            print("3. Edit Contact")
-            print("4. Delete Contact")
-            print("5. Sort Contact")
-            print("6. Back to Main Menu")
 
-            choice = input("Enter choice: ")
+        while True:
+            print(
+                "\nMenu:\n"
+                "1. Add Contact\n"
+                "2. Display Contacts\n"
+                "3. Edit Contact\n"
+                "4. Delete Contact\n"
+                "5. Sort Contact\n"
+                "6. Back to Main Menu"
+            )
+
+            choice = input("Enter choice: ").strip()
 
             if choice == "1":
-                book.add_contact()  
+                self._add_contact_flow(book)
             elif choice == "2":
                 book.display_contacts()
-            elif choice == "3":            
+            elif choice == "3":
                 book.edit_contacts()
-            elif choice == "4":            
+            elif choice == "4":
                 book.delete_contact()
+            elif choice == "5":
+                book.sort_contacts()
             elif choice == "6":
                 break
-            elif choice  == "5":
-                book.sort_contact()
             else:
                 print("Invalid choice.")
-            
-class AddressBookSearch(AddressBookSystem):
-    def __init__(self):
-        super().__init__()
-        
-    def search_by_city_state(self):
-        if not self.books:
-            print("No Book")
-            return
-        
-        choice = int(input("\nEnter (1)-City (2)-State: "))
-        if choice  == 1:
-            key = "city"
-        elif choice == 2:
-            key = "state"
-        else:
-            print("Invalid Choice")
-            return
-        
-        option = input(f"Enter {key.title()} to search: ")
-        found = False
 
-        for book_name , book in self.books.items():
-            for contact in book.details:
-                if getattr(contact,key) == option:
-                    print(contact)
-                    found = True
-            
-            if not found:
-                print("Conatct Not found")
-    
-    def view_by_city_or_state(self, count_only = False):
+    # ---------- Helpers ---------- #
+    def _add_contact_flow(self, book: AddressBook) -> None:
+        contact = get_contact_input()
+        if contact is None:
+            print("Contact not added due to validation error.")
+            return
+
+        # Persist to DB then update in‑memory cache
+        add_contact(book.db_id, contact)
+        book.details.append(contact)
+        print("✅ Contact saved")
+
+
+# --------- OPTIONAL: Search functionality re‑using the same cache --------- #
+class AddressBookSearch(AddressBookSystem):
+    """Extends AddressBookSystem with city/state search utilities."""
+
+    def search_by_city_state(self) -> None:
         if not self.books:
             print("No Book")
             return
-        person_state = {}
-        person_city = {}
+
+        try:
+            choice = int(input("\nEnter (1)-City (2)-State: "))
+        except ValueError:
+            print("Invalid entry.")
+            return
+
+        key = "city" if choice == 1 else "state" if choice == 2 else None
+        if not key:
+            print("Invalid choice")
+            return
+
+        option = input(f"Enter {key.title()} to search: ").strip()
+        found = False
 
         for book in self.books.values():
             for contact in book.details:
-                city = contact.city.title()
-                person_city.setdefault(city, []).append(contact)   
+                if getattr(contact, key).lower() == option.lower():
+                    print(contact)
+                    found = True
 
-                state = contact.state.title()
-                person_state.setdefault(state, []).append(contact)
-            
-        choice = int(input("\nEnter (1)-City (2)-State: "))
-        if choice  == 1:
-            for city , people in person_city.items():
-                print(f"\n City :{city} ({len(people)} contact{'s' if len(people)>1 else ''})")
-                if not count_only :
-                    for person in people:
-                        print(person)
-            
-        elif choice == 2:
-            for state, people in person_state.items():
-                print(f"\n State :{state} ({len(people)} contact{'s' if len(people)>1 else ''})")
-                if not count_only :
-                    for person in people:
-                        print(person)
-        else:
-            print("Invalid Entry")
-    
-    def count_by_city_or_state(self):
+        if not found:
+            print("Contact Not found")
+
+    def view_by_city_or_state(self, count_only: bool = False) -> None:
+        if not self.books:
+            print("No Book")
+            return
+
+        person_state: dict[str, list] = {}
+        person_city: dict[str, list] = {}
+
+        for book in self.books.values():
+            for contact in book.details:
+                person_city.setdefault(contact.city.title(), []).append(contact)
+                person_state.setdefault(contact.state.title(), []).append(contact)
+
+        try:
+            choice = int(input("\nEnter (1)-City (2)-State: "))
+        except ValueError:
+            print("Invalid entry.")
+            return
+
+        mapping = person_city if choice == 1 else person_state if choice == 2 else None
+        if mapping is None:
+            print("Invalid choice")
+            return
+
+        for place, people in mapping.items():
+            print(
+                f"\n{place} ({len(people)} contact{'s' if len(people) != 1 else ''})"
+            )
+            if not count_only:
+                for person in people:
+                    print(person)
+
+    def count_by_city_or_state(self) -> None:
         self.view_by_city_or_state(count_only=True)
-
-
-        
-            
-
-
-
-
-
-        
-        
-
-
-
-
-
-
-
