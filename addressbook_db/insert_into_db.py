@@ -2,35 +2,41 @@ from __future__ import annotations
 from mysql.connector import Error
 from .db_connection import connect
 from details import Details
+from .table_schema import TableSchema
 
-# ---------- DDL ----------
-DDL_ADDRESSBOOK = """
-CREATE TABLE IF NOT EXISTS address_books (
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL
-)
-"""
+# # ---------- DDL ----------
+# DDL_ADDRESSBOOK = """
+# CREATE TABLE IF NOT EXISTS address_books (
+#     id   INT AUTO_INCREMENT PRIMARY KEY,
+#     name VARCHAR(100) UNIQUE NOT NULL
+# )
+# """
 
-DDL_CONTACT = """
-CREATE TABLE IF NOT EXISTS contacts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    address_book_id INT NOT NULL,
-    first_name VARCHAR(50),
-    last_name  VARCHAR(50),
-    email      VARCHAR(100),
-    phone      VARCHAR(15),
-    address    VARCHAR(255),
-    city       VARCHAR(50),
-    state      VARCHAR(50),
-    zip        VARCHAR(10),
-    FOREIGN KEY (address_book_id)
-        REFERENCES address_books(id) ON DELETE CASCADE
-)
-"""
+# DDL_CONTACT = """
+# CREATE TABLE IF NOT EXISTS contacts (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     address_book_id INT NOT NULL,
+#     first_name VARCHAR(50),
+#     last_name  VARCHAR(50),
+#     email      VARCHAR(100),
+#     phone      VARCHAR(15),
+#     address    VARCHAR(255),
+#     city       VARCHAR(50),
+#     state      VARCHAR(50),
+#     zip        VARCHAR(10),
+#     FOREIGN KEY (address_book_id)
+#         REFERENCES address_books(id) ON DELETE CASCADE
+# )
+# """
 
 def _ensure_schema(cur):
-    cur.execute(DDL_ADDRESSBOOK)
-    cur.execute(DDL_CONTACT)
+    print("Creating Tables with Queries:\n")
+    for table_key in TableSchema.table_schema.keys():
+        query = TableSchema.get_create_statement(table_key)
+        print(f"{TableSchema.get_table_name(table_key)}:\n{query}\n")
+        cur.execute(query)
+
+
 
 # ---------- Address Book ----------
 def create_address_book(name: str) -> int | None:
