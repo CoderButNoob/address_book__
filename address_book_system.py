@@ -27,7 +27,7 @@ class AddressBookSystem:
             self.books[name] = AddressBook(db_id=ab_id)
             print(f"✅ Address Book '{name}' created (id {ab_id}).")
         else:
-            print("❌ Address Book already exists or DB error.")
+            print(" Address Book already exists or DB error.")
 
     def list_book(self) -> None:
         rows = list_address_books()

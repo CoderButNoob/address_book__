@@ -1,14 +1,13 @@
-import os, time, mysql.connector,sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import os, time
+import mysql.connector
 from mysql.connector import pooling, Error
- 
+
 DB_CONFIG = {
     "host":     os.getenv("DB_HOST", "localhost"),
     "port":     int(os.getenv("DB_PORT", 3306)),
     "user":     os.getenv("DB_USER", "root"),
     "password": os.getenv("DB_PASS", "PASSWORD"),
-    "database": os.getenv("DB_NAME", "address_book_db"),
+    "database": os.getenv("DB_NAME", "addressbook_db"),
     "auth_plugin": "caching_sha2_password",
 }
 
@@ -26,7 +25,6 @@ def get_pool():
     return _pool
 
 def connect(retries: int = 3, delay: float = 2.0):
-    """Get a pooled connection with simple retry logic."""
     for attempt in range(1, retries + 1):
         try:
             return get_pool().get_connection()
