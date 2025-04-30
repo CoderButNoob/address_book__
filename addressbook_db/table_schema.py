@@ -51,7 +51,7 @@ class TableSchema:
                 );
             END
         """
-    }
+        }
     trigger_scripts = {
     "before_insert_contacts": """
         CREATE TRIGGER before_insert_contacts
@@ -76,7 +76,7 @@ class TableSchema:
             END IF;
         END
     """
-}
+    }
 
 
     @classmethod

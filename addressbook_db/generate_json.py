@@ -27,11 +27,11 @@ def generate_json(filename="contacts.json", total_records=100000, max_address_bo
 
         # Validate phone number format
         if not re.match(phone_pattern, phone):
-            phone = "+91 " + "".join([str(random.randint(0, 9)) for _ in range(10)])  # Generate a valid phone number
+            phone = "+91 " + "".join([str(random.randint(0, 9)) for _ in range(10)])  
 
         # Validate zip code format
         if not re.match(zip_pattern, zip_code):
-            zip_code = "".join([str(random.randint(0, 9)) for _ in range(6)])  # Generate a valid zip code
+            zip_code = "".join([str(random.randint(0, 9)) for _ in range(6)])  
 
         contact = {
             "address_book_id": random.randint(1, max_address_book_id),

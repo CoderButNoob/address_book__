@@ -1,9 +1,6 @@
 import json
 from db_connection import connect
 
-
-
-
 def load_contacts_from_json(filename="contacts.json", batch_size=1000):
     conn = connect()
     cursor = conn.cursor()

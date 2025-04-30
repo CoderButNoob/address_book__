@@ -2,6 +2,7 @@ from db_connection import connect
 from schema_manager import ensure_schema
 from generate_json import generate_json
 from load_contact_json import load_contacts_from_json
+from group_contacts import group_contact
 
 def insert_address_books():
     """Insert initial address books to satisfy foreign key constraint."""
@@ -29,6 +30,10 @@ def main():
 
     print("\nStep 4: Loading contacts into database...")
     load_contacts_from_json(filename="contacts.json", batch_size=1000)
+    
+    print("\nStep 5: Group Contacts into CSV file...")
+    name = input("Enter Address Book name to export: ")
+    group_contact(book_name=name)
 
     print("\nAll Done Successfully!")
 
